@@ -1,0 +1,11 @@
+{
+   "/src/api/InterviewPerception/queryAmountStatistic.ts": "de4ba246bacdb721ea4bdefbc8761d32",
+   "/src/api/InterviewPerception/queryStatisticsOnDistrict.ts": "0c289158800c55fc448cd7dda482e62b",
+   "/src/api/InterviewPerception/queryMapStatistics.ts": "6b75e5ebfc28523d60c7b7f7e0be456d",
+   "/src/api/InterviewPerception/queryStatisticsOnDate.ts": "da31d7b0bf802d894e8cef576b878020",
+   "/src/api/InterviewPerception/getRecentRankList.ts": "909346ef7c6a8847e2469b1f0ae03e9e",
+   "/src/api/InterviewPerception/queryAgeAndGender.ts": "1be0e1fd3b72f344ea9d1fb0a486ecb8",
+   "/src/api/InterviewPerception/queryCategoryAndSpecial.ts": "639ed90e624bc2a605393960c564534a",
+   "/src/api/InterviewPerception/queryBehaviorAndFrequency.ts": "7f534cede20482f8686b21005d738eec",
+   "/src/api/InterviewPerception/queryStatisticsWBJ.ts": "1aa5479d2f4236fb931288da7087c567"
+}

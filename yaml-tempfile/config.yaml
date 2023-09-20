@@ -1,0 +1,66 @@
+logger_level: 5 # 日志打印级别，0: ERROR信息 1:WARN信息 2: LOG信息，3: INFO信息(默认)，4: DEBUG信息，5: TRACE信息
+template_config: #单文件输出模板
+   - name: API列表返回模板
+     file: template/list_api.ejs
+   - name: API对象返回模板
+     file: template/object_api.ejs
+file_config: # 单文件输出配置
+   api: #API 接口代码配置
+      template: API列表返回模板
+      # test: true
+      output_dir: /src/api
+      generator: # 代码生成器，使用相同参数，根据列表生成多个文件
+         # ${默认大小写} $U{}全部大写 $L{}全部小写 $F{}首字母大写(仅转换首字母)
+         - file: ${API_Name}.ts # 入口文件
+           sub_dir: /InterviewPerception # 可根据参数替换
+      list: # 多文件配置出来
+         - name: 统计(左上角统计数据) # 配置数据
+           params:
+              API_Name: queryAmountStatistic
+              API_Url: /api/queryAmountStatistic
+              API_Entity: AmountStatisticEntity
+         - name: 按地区统计（左边柱状图） # 配置数据
+           params:
+              API_Name: queryStatisticsOnDistrict
+              API_Url: /api/queryStatisticsOnDistrict
+              API_Entity: StatisticsOnArea
+         - name: 地图统计(最中间大地图) # 配置数据
+           params:
+              API_Name: queryMapStatistics
+              API_Url: /api/queryMapStatistics
+              API_Entity: MapStatistics
+         - name: 按日期统计（折线图） # 配置数据
+           params:
+              API_Name: queryStatisticsOnDate
+              API_Url: /api/queryStatisticsOnDate
+              API_Entity: StatisticsOnDate
+         - name: TOP列表(右上角Top) # 配置数据
+           template: API对象返回模板 # 不同的模板
+           params:
+              API_Name: getRecentRankList
+              API_Url: /api/getRecentRankList
+              API_Entity: RecentRankEntity
+         - name: 年龄、性别统计（饼图） # 配置数据
+           template: API对象返回模板 # 不同的模板
+           params:
+              API_Name: queryAgeAndGender
+              API_Url: /api/queryAgeAndGender
+              API_Entity: AgeAndGenderEntity
+         - name: 专终、内容分类统计（饼图） # 配置数据
+           template: API对象返回模板 # 不同的模板
+           params:
+              API_Name: queryCategoryAndSpecial
+              API_Url: /api/queryCategoryAndSpecial
+              API_Entity: CategoryAndSpecialEntity
+         - name: 非社外、频次统计（饼图） # 配置数据
+           template: API对象返回模板 # 不同的模板
+           params:
+              API_Name: queryBehaviorAndFrequency
+              API_Url: /api/queryBehaviorAndFrequency
+              API_Entity: BehaviorAndFrequencyEntity
+         - name: 统计（地图按钮二级页面） # 配置数据
+           params:
+              API_Name: queryStatisticsWBJ
+              API_Url: /api/queryStatisticsWBJ
+              API_Entity: WBJStatisticEntity
+

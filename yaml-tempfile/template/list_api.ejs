@@ -1,0 +1,26 @@
+/**
+ * <%= tempData.name %>
+ */
+import { ApiResponse, post, API_HOST } from '@/api/request';
+import { <%= tempData.params.API_Entity %> } from '@/api/typings/type';
+
+
+let <%= tempData.params.API_Name %> = (postParams: {}): Promise<
+<%= tempData.params.API_Entity %>[] | undefined
+> => {
+   let defaultParams: {
+   } = {
+   };
+   let newParams = { ...defaultParams, ...postParams };
+   let url = '<%= tempData.params.API_Url %>';
+   return post<<%= tempData.params.API_Entity %>[]>(API_HOST, url, newParams).then(
+      (result: ApiResponse<<%= tempData.params.API_Entity %>[]> | null) => {
+         if (result?.status === 0) {
+            return result.data;
+         }
+         return undefined;
+      },
+   );
+};
+
+export { <%= tempData.params.API_Name %> };

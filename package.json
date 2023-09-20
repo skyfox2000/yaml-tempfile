@@ -1,0 +1,41 @@
+{
+   "name": "yaml-tempfile",
+   "version": "0.0.15",
+   "description": "Yaml模板自动化生成文件，批量管理自动化生成文件, 支持vue/react，Generate files by yaml config and templates, plugin for vue/react",
+   "exports": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+   },
+   "main": "./dist/index.js",
+   "scripts": {
+      "run": "node src/index.js",
+      "build": "rm -rf dist && rollup --bundleConfigAsCjs -c rollup.config.js",
+      "test": "tsc src/index.ts && node src/index.js"
+   },
+   "author": "Alex.Hua",
+   "license": "MIT",
+   "vite": {
+      "plugins": "./dist/index.js"
+   },
+   "dependencies": {
+      "consola": "^3.2.3",
+      "ejs": "^3.1.9",
+      "js-yaml": "^4.1.0",
+      "merge-anything": "^5.1.7"
+   },
+   "devDependencies": {
+      "@types/js-yaml": "^4.0.5",
+      "@types/node": "^20.6.0",
+      "@typescript-eslint/eslint-plugin": "^6.7.0",
+      "@typescript-eslint/parser": "^6.7.0",
+      "eslint": "^8.49.0",
+      "eslint-scope": "^7.2.2",
+      "eslint-visitor-keys": "^3.4.3",
+      "rollup": "^3.29.2",
+      "rollup-plugin-ignore": "^1.0.10",
+      "rollup-plugin-typescript2": "^0.35.0",
+      "tslib": "^2.6.2",
+      "typescript": "^5.2.2"
+   }
+}
+
