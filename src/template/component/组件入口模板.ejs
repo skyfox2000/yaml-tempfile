@@ -1,0 +1,10 @@
+import { App, Plugin } from 'vue';
+import <%= tempData.name %> from './src/index.a.vue';
+
+export const <%= tempData.name %>Plugin: Plugin = {
+  install(app: App) {
+    app.component('re-<%=tempData.name.toLowerCase() %>', <%= tempData.name %>);
+  },
+};
+
+export { <%= tempData.name %> };

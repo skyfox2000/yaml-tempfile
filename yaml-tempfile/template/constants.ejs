@@ -1,0 +1,25 @@
+<% tempData.params.forEach(function(group) { %>
+/**
+  * <%= group.group %>  
+*/<% Object.keys(group.constants).forEach(function(key) { %> 
+<% if (group.constants[key].import) { %><%- group.constants[key].import %>
+<% } %>/**
+  * <%= group.constants[key].desc %>
+*/<%
+    var type = group.constants[key].type || "string";
+    var value = group.constants[key].value.trim();
+    switch (type) {
+      case "string":
+        value = JSON.stringify(value);
+        break;
+      case "number":
+      case "boolean":
+        break;
+      default:
+        value = JSON.stringify(JSON.parse(value), null, 2);
+        break;
+    }
+%>
+export const <%= key %>: <%= type %> = <%- value%>;
+<% }); %>
+<% }); %>

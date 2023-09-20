@@ -1,0 +1,30 @@
+{
+   "compilerOptions": {
+      /* Language and Environment */
+      "target": "ES5",
+
+      /* Modules */
+      "module": "ESNext",
+      "lib": ["ES2020"],
+      "importHelpers": true,
+
+      /* JavaScript Support */
+      "sourceMap": false,
+      "inlineSourceMap": false,
+      "moduleResolution": "Node",
+
+      /* Interop Constraints */
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+
+      /* Type Checking */
+      "strict": false,
+      "noImplicitAny": false,
+
+      /* Completeness */
+      "skipLibCheck": true,
+
+      "declaration": false
+   }
+}
+
