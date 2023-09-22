@@ -77,8 +77,6 @@ export const saveFile = (yamlBase: string, key: string, templateInfo: TemplateIt
    const filePath: string = path.join(restData.target_output_dir, fileName);
    const fullFilePath = path.join(fullPath, fileName);
 
-   const hash = getFileHash(JSON.stringify(restData));
-   newFileMap[filePath] = hash;
    if (skip) {
       logger.warn("忽略文件" + path.join(restData.target_sub_dir, restData.target_file) + "！");
       return;
@@ -89,14 +87,23 @@ export const saveFile = (yamlBase: string, key: string, templateInfo: TemplateIt
    }
    const oldFileMap: FileData = mapFiles[key];
    logger.debug("tempData对象内容: ", { ...restData });
-   const rendered = generateTemplate(templateInfo, { tempData: { ...restData } });
+
+   const hash = getFileHash(templateInfo.source + "" + JSON.stringify(restData));
+   newFileMap[filePath] = hash;
 
    if (tempData.test) {
+      const rendered = generateTemplate(templateInfo, { tempData: { ...restData } });
       logger.debug("测试文件路径与文件名: ", filePath);
       logger.info("文件测试输出结果: ", rendered.trim(), "\n");
-   } else if (oldFileMap[filePath] !== hash || !fs.existsSync(fullFilePath)) {
-      if (restData.overwrite === false) {
-         logger.warn("文件" + filePath + "禁止覆盖！");
+   } else if (oldFileMap[filePath] !== hash) {
+      const rendered = generateTemplate(templateInfo, { tempData: { ...restData } });
+      if (fs.existsSync(fullFilePath)) {
+         if (restData.overwrite === false) {
+            logger.warn("文件" + filePath + "禁止覆盖！");
+         } else {
+            fs.writeFileSync(fullFilePath, rendered.trim(), "utf8");
+            logger.log("生成文件" + filePath + "完成！");
+         }
       } else {
          /// 如果目录不存在，创建目录
          if (!fs.existsSync(fullPath))

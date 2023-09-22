@@ -11,10 +11,22 @@ let YAML_BASE = "";
  * 模板配置项
  */
 interface TemplateItem {
+   /**
+    * 模板名称
+    */
    name: string;
+   /**
+    * 模板文件
+    */
    file: string;
+   /**
+    * 模板代码
+    */
+   source: string;
+   /**
+    * 模板引擎
+    */
    engine?: string;
-   output_dir?: string;
 }
 export { TemplateItem };
 
@@ -28,6 +40,8 @@ const templateEngineCache: {
 export function loadTemplateConfig(yamlBase: string, configs: TemplateItem[]) {
    YAML_BASE = yamlBase;
    configs.forEach(config => {
+      const templateContent = fs.readFileSync(path.join(process.cwd(), YAML_BASE, config.file), "utf8");
+      config.source = templateContent;
       templateMap.set(config.name, config);
    });
 }
@@ -35,17 +49,8 @@ export function loadTemplateConfig(yamlBase: string, configs: TemplateItem[]) {
 
 export function getTemplate(name: string | TemplateItem): TemplateItem | undefined {
    if (typeof name === "string") {
-      // 如果是字符串,判断是否为路径
-      if (name.includes(".")) {
-         // 如果有扩展名,转为模板配置
-         return {
-            name: name,
-            file: name
-         };
-      } else {
-         // 如果是模板名,从映射中获取
-         return templateMap.get(name);
-      }
+      // 如果是模板名,从映射中获取
+      return templateMap.get(name);
    } else {
       // 如果本身就是模板配置,直接返回
       return name;
@@ -54,7 +59,7 @@ export function getTemplate(name: string | TemplateItem): TemplateItem | undefin
 
 export function generateTemplate(template: TemplateItem, data?: any) {
    try {
-      const templateContent = fs.readFileSync(path.join(process.cwd(), YAML_BASE, template.file), "utf8");
+      const templateContent = template.source;
       let templateEngine = null;
 
       if (template.engine) {

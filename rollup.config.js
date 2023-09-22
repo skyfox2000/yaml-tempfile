@@ -1,5 +1,5 @@
 import typescript from 'rollup-plugin-typescript2';
-import ignore from 'rollup-plugin-ignore';
+import del from 'rollup-plugin-delete';
 
 export default {
    input: ['src/index.ts'],
@@ -15,6 +15,6 @@ export default {
    }],
    plugins: [
       typescript(),
-      ignore(['samples/**', 'src/packages/**'])
+      del({ hook: "buildEnd", targets: ['src/**/*.js', '!dist/index.d.ts'], verbose: true })
    ]
 }
