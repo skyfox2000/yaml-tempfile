@@ -1,0 +1,27 @@
+<script setup>
+import Intro from "./intro.a.vue";
+<% if(tempData.params.demos) tempData.params.demos.forEach(function(demo, i) { %>
+import Demo<%=i+1%> from "./demo<%=i+1%>.vue";
+<% }); %>
+import Props from "./props.a.vue";
+import Emits from "./emits.a.vue";
+import Slots from "./slots.a.vue";
+</script>
+
+# <%=tempData.params.title%>
+<Intro></Intro>
+
+<% if(tempData.params.demos) tempData.params.demos.forEach(function(demo, i) { %>
+## <%=demo.title%>
+<Demo<%=i+1%> />
+<% }); %>
+
+## API
+### Props属性
+<Props></Props>
+
+### Emits事件
+<Emits></Emits>
+
+### Slots插槽
+<Slots></Slots>

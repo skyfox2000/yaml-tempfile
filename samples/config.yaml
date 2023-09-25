@@ -1,73 +1,106 @@
+logger_level: 3
 template_config: #单文件输出模板
-   - name: 文件基础模板
-     file: "src/template/file.template"
-   - name: 下载文件模板1
-     file: src/template/file1.template
-     output_dir: /src/download/
-   - name: 下载文件模板2
-     file: src/template/file2.template
-     output_dir: /src/download/
-   - name: 组件入口模板
-     file: src/template/component/组件入口模板.ejs
+   - name: 组件index模板
+     file: template/组件index模板.ejs
    - name: 组件源代码模板
-     file: src/template/component/组件源代码模板.ejs
-   - name: 组件演示模板
-     file: src/template/component/组件演示模板.ejs
-   - name: 组件演示文档模板
-     file: src/template/component/组件演示文档模板.ejs
+     file: template/组件源代码模板.ejs
+   - name: 组件基础demo模板
+     file: template/组件基础demo模板.ejs
+   - name: 组件README模板
+     file: template/组件README模板.ejs
+   - name: 组件intro模板
+     file: template/组件intro模板.ejs
+   - name: 组件props模板
+     file: template/组件props模板.ejs
+   - name: 组件emits模板
+     file: template/组件emits模板.ejs
+   - name: 组件slots模板
+     file: template/组件slots模板.ejs
+   - name: 组件路由模板
+     file: template/组件路由模板.ejs
+   - name: 组件统一导出模板
+     file: template/组件统一导出模板.ejs
 file_config: # 单文件输出配置
-   constants: #常量配置
-      test: true # 是否打印测试结果
-      output_dir: /src/constants/
-      generator: # 代码生成器，使用相同参数，根据列表生成多个文件
-        - file: constants.js
-          template: /src/template/constants.ejs
-      params: # 数据参数
-         - group: 分组说明 # 分组
-           constants:
-              SERVER1:
-                 value: 常量名称1
-                 desc: 常量说明1 # 备注说明
-         - group: 分组说明 # 分组
-           constants:
-              SERVER2:
-                 import: import { type } from "file";
-                 type: type
-                 value: |
-                    {"api":"常量名称2" }
-                 desc: 常量说明2 # 备注说明
    element: #element文件自动配置
-      output_dir: /src/packages/element
+      output_dir: /samples/components
       generator: # 代码生成器，使用相同参数，根据列表生成多个文件
          # ${默认大小写} $U{}全部大写 $L{}全部小写 $F{}首字母大写(仅转换首字母)
          - file: index.a.ts # 入口文件
-           template: 组件入口模板
-           sub_dir: ${type}/${name}/${type}/${name} # 可根据参数替换
-         - file: ${name}.a.vue # 源代码文件，可根据参数替换，
-           overwrite: false # 是否覆盖，默认为true
+           template: 组件index模板
+           sub_dir: ${file_path}/${name} # 可根据参数替换
+         - file: ${name}.vue # 源代码文件，可根据参数替换，
            template: 组件源代码模板
-           sub_dir: ${type}/${name}/src
-         - file: demo.a.vue # 演示文件
-           template: 组件演示模板
-           sub_dir: ${type}/${name}/docs
+           overwrite: false
+           sub_dir: ${file_path}/${name}/src
          - file: README.a.md # 演示文档
-           template: 组件演示文档模板
-           sub_dir: ${type}/${name}/docs
+           template: 组件README模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: intro.a.vue # 组件介绍
+           template: 组件intro模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: props.a.vue # 组件参数
+           template: 组件props模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: emits.a.vue # 组件事件
+           template: 组件emits模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: slots.a.vue # 组件插槽
+           template: 组件slots模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: demo1.vue # 默认演示文件
+           spec: $.params.demos[0] # 指定属性，没有则不处理，如有，则替换成指定对象，可通过tempData.spec调用
+           template: 组件基础demo模板
+           sub_dir: ${file_path}/${name}/docs
+         - file: demo2.vue # 演示文件2
+           spec: $.params.demos[1] # 指定属性，没有则不处理，如有，则替换成指定对象，可通过tempData.spec调用
+           template: 组件基础demo模板
+           sub_dir: ${file_path}/${name}/docs
+      group_generator: # list分组代码生成器，将多个文件的配置信息，统一在一个文件内输出模板
+         - file: list.json # 路由文件
+           filter_by: # 过滤条件，根据list项目里的某个属性进行过滤，支持JSON路径(需$.开头)
+              "$.sub_dir": "${file_path}/${name}"
+              "$.target_file": index.a.ts
+          #  group_by: # 分组字段，根据list项目里的某个属性进行分组，支持JSON路径(需$.开头)，结果存入groupName
+           template: 组件路由模板
+         - file: index.a.ts # 路由文件
+           filter_by: # 过滤字段，根据list项目里的某个属性进行过滤，支持JSON路径(需$.开头)
+              "$.sub_dir": "${file_path}/${name}"
+              "$.target_file": index.a.ts
+           template: 组件统一导出模板
       list: # 多项目配置出来
          - name: Badge # 组件名称
-           flows: # 控制生成器执行的某些步骤，如没有则全部执行
-              - 0
-              - 1
            params: # 数据参数
-              type: basic
-              desc: 徽标组件
-              props: # 组件属性配置
-                 - name: type #属性名
-                   type: | # 属性类型
-                      { type: Array<String>, default: [] }
+              file_path: basic
+              title: 徽标组件
+              demos: 
+                - title: 基础用法
+                  code: |
+                     <Button icon="pen">按钮</Button>
          - name: Button # 按钮组件
-           skip: true # 是否跳过
            params: # 数据参数
-              type: basic
-              desc: 按钮组件
+              file_path: basic
+              title: 按钮组件
+              demos: 
+                - title: 基础用法
+                  code: |
+                     <Button icon="pen">按钮</Button>
+         - name: Icon # 图标组件
+           params: # 数据参数
+              file_path: basic
+              title: 图标组件
+              demos:
+                - title: 基础用法
+                  code: |
+                     <Icon icon="pen" />
+                - title: 多图标自动切换
+                  code: |
+                     <Icon autoSwitch :icons="['pen', '']" />
+         - name: Tooltip # 提示组件
+           params: # 数据参数
+              file_path: basic
+              title: 提示组件
+              demos:
+                - title: 基础用法
+                  code: |
+                     <Tooltip content='按钮提示'>按钮</Tooltip>
 

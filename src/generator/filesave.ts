@@ -57,7 +57,7 @@ export const removeDeletedFiles = (yamlBase: string, key: string, newFileMap: Fi
       loadFileDataMap(yamlBase, key);
    }
    const oldFileMap: FileData = mapFiles[key];
-   logger.debug(`删除 ${key} 文件列表`);
+   logger.debug(`删除 ${key} 中未使用的文件`);
    for (const filePath in oldFileMap) {
       if (!newFileMap[filePath]) {
          const fullFilePath = path.join(process.cwd(), filePath);

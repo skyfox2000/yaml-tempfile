@@ -1,2 +1,6 @@
 **/*_filemap.json
 src/packages
+
+yaml-tempfile/*
+
+samples

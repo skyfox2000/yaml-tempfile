@@ -1,0 +1,11 @@
+[<% for(let i = 0; i < tempData.list_data.length; i++) { 
+    const item = tempData.list_data[i];
+  %>
+   {
+      "name": "<%= item.name %>",
+      "title": "<%= item.params.title %>", 
+      "desc": "",
+      "path": "<%= item.params.file_path %>",
+      "className": "<%= item.name.toLowerCase() %>"
+   }<% if (i < tempData.list_data.length - 1) { %>,<% } } %>
+]

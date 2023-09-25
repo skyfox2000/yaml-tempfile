@@ -1,0 +1,10 @@
+<template>
+  <VueLiveEditor :code="code"></VueLiveEditor>
+</template>
+<script setup lang="ts">
+import VueLiveEditor from "@/editor/vue-live-editor.vue";
+/**
+ * <%=tempData.spec_data.title%>
+*/
+const code = `<%-tempData.spec_data.code.trim()%>`;
+</script>

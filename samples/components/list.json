@@ -1,0 +1,30 @@
+[
+   {
+      "name": "Badge",
+      "title": "徽标组件", 
+      "desc": "",
+      "path": "basic",
+      "className": "badge"
+   },
+   {
+      "name": "Button",
+      "title": "按钮组件", 
+      "desc": "",
+      "path": "basic",
+      "className": "button"
+   },
+   {
+      "name": "Icon",
+      "title": "图标组件", 
+      "desc": "",
+      "path": "basic",
+      "className": "icon"
+   },
+   {
+      "name": "Tooltip",
+      "title": "提示组件", 
+      "desc": "",
+      "path": "basic",
+      "className": "tooltip"
+   }
+]
