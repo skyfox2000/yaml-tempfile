@@ -1,0 +1,16 @@
+<% for(let i = 0; i < tempData.list_data.length; i++) {
+   const item = tempData.list_data[i];
+   const importPath = `./${item.target_sub_dir}/index.a`;
+%>import { <%= item.name %> } from '<%= importPath %>';
+<% } %>
+export {<% for(let i = 0; i < tempData.list_data.length; i++) {
+    const item = tempData.list_data[i]; 
+  %>
+  <%= item.name %><% if(i < tempData.list_data.length - 1) { %>,<% } %><% } %> 
+}
+ 
+export default {<% for(let i = 0; i < tempData.list_data.length; i++) {
+    const item = tempData.list_data[i];
+  %>
+  <%= item.name %><% if(i < tempData.list_data.length - 1) { %>,<% } %><% } %>
+}

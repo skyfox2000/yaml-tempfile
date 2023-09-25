@@ -18,6 +18,8 @@ interface YamlTempfileOptions {
    yamlFile?: string;
 }
 
+export type { YamlTempfileOptions };
+
 interface AppConfig {
    logger_level: string;
    template_config: TemplateItem[];
@@ -30,7 +32,7 @@ interface AppConfig {
  * @param yamlBase 配置根目录，存放template目录和文件指纹
  * @param yamlFilePath Yaml文件路径
  */
-export function initYaml(yamlBase: string, yamlFilePath: string) {
+export default function initYaml(yamlBase: string, yamlFilePath: string) {
    try {
       // 读取YAML配置文件
       const config: AppConfig = yaml.load(fs.readFileSync(path.join(process.cwd(), yamlFilePath), "utf8")) as AppConfig;
@@ -41,40 +43,11 @@ export function initYaml(yamlBase: string, yamlFilePath: string) {
       }
       // 加载模板配置
       loadTemplateConfig(yamlBase, config.template_config);
-
       // 处理文件配置
       loadFileConfigs(yamlBase, config.file_config);
    } catch (error: any) {
-      logger.error("Index initYaml 1", `Error initializing YAML configuration: ${error.message}`);
+      logger.error(`Error initializing YAML configuration: ${error.message}`);
       // 在这里可以选择如何处理错误，例如抛出异常或采取其他措施
       throw error;
    }
 }
-
-/**
- * Vite插件: vite-yaml-tempfile
- * Yaml模板自动化生成文件，批量管理自动化生成文件
- * @param options Vite配置
- * @returns 
- */
-export default function viteYamlTempFile(options?: YamlTempfileOptions) {
-   try {
-      return {
-         name: "vite-yaml-tempfile",
-         configResolved() {
-            let { yamlBase, yamlFile } = options || {};
-            if (!yamlBase) yamlBase = "/yaml-tempfile";
-            if (!yamlFile) yamlFile = "config.yaml";
-            initYaml(yamlBase, path.join(yamlBase, yamlFile));
-         }
-      }
-   } catch (error: any) {
-      // 在这里可以处理初始化过程中的错误
-      logger.error("Index init 1", `Initialization error: ${error.message}`);
-   }
-}
-
-// 如果当前模块是被直接运行的，则执行你的组件的功能
-(function () {
-   initYaml("/yaml-tempfile", "./yaml-tempfile/config.yaml");
-})();

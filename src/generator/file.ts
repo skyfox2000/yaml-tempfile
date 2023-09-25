@@ -2,8 +2,10 @@ import * as crypto from "crypto";
 import * as fs from "fs";
 import { merge } from 'merge-anything';
 import logger from "../logger/logger";
-import { FileBase, GeneratorItem, processFile } from "./generator";
+import { FileBase, GeneratorItem, processGenerator } from "./generator";
 import { FileData, removeDeletedFiles, saveFileDataMap } from "./filesave";
+
+import { processGroup } from "./group_generator"
 
 /**
  * 配置根目录，存放template目录和文件指纹
@@ -29,6 +31,10 @@ interface ListItem extends FileBase {
  * params为具体配置数据
 */
 interface FileItem extends FileBase {
+  /**
+   * 分组文件生成器
+   */
+  group_generator: Array<GeneratorItem>;
   /**
    * 文件生成器
    */
@@ -84,9 +90,9 @@ export function loadFileConfigs(yamlBase: string, configs: FileConfig) {
   for (const key in configs) {
     const fileInfo = configs[key];
     if (fileInfo.skip) continue;
-    const { list, generator, params, ...otherProps } = fileInfo;
-    if (!generator || !generator.length) {
-      logger.error("File loadFileConfigs 1", "Missing generator configuration for file: ", fileInfo);
+    const { list, generator, group_generator, params, ...otherProps } = fileInfo;
+    if ((!generator || !generator.length) && (!group_generator || !group_generator.length)) {
+      logger.error("Missing file generator configuration for file: ", fileInfo);
       continue;
     }
 
@@ -98,10 +104,17 @@ export function loadFileConfigs(yamlBase: string, configs: FileConfig) {
       : [wrappedParams]) as ListItem[];
 
     const newFileMap: FileData = {};
-    listItems.forEach(listItem => {
-      processFile(yamlBase, key, generator, listItem, newFileMap);
-    });
-    
+    const newListItems: ListItem[] = [];
+
+    if (generator && generator.length) {
+      listItems.forEach(listItem => {
+        processGenerator(yamlBase, key, generator, listItem, newFileMap, newListItems);
+      });
+    }
+
+    if (group_generator && group_generator.length)
+      processGroup(yamlBase, key, group_generator, wrappedParams, newListItems, newFileMap);
+
     removeDeletedFiles(YAML_BASE, key, newFileMap);
     saveFileDataMap(YAML_BASE, key, newFileMap);
   }
