@@ -37,5 +37,13 @@
       "rollup-plugin-typescript2": "^0.35.0",
       "tslib": "^2.6.2",
       "typescript": "^5.2.2"
-   }
+   },
+   "repository": {
+     "type": "git",
+     "url": "https://github.com/skyfox2000/yaml-tempfile.git"
+   },
+   "bugs": {
+     "url": "https://github.com/skyfox2000/yaml-tempfile/issues"
+   },
+   "homepage": "https://github.com/skyfox2000/yaml-tempfile"
 }

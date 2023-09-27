@@ -4,3 +4,4 @@ src/packages
 yaml-tempfile/*
 
 samples
+node_modules
