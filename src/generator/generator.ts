@@ -115,7 +115,7 @@ const varRegex = /\$([ULF])\{(\w+)\}|%\{(\w+)\}/g;
  * @param {object} params 参数
  * @returns {string}
  */
-function replaceVars(template, params) {
+export function replaceVars(template, params) {
    const regex = /\$([A-Z]{0,1})\{(\w+)\}/g;
    return template.replace(regex, (match, modifier, variable) => {
       let value = params[variable];
@@ -133,7 +133,7 @@ function replaceVars(template, params) {
       } else return "$" + modifier + "{" + variable + "}";
 
       return value;
-   });
+   }) as string;
 }
 
 /**
@@ -174,7 +174,7 @@ export function processFile(yamlBase: string, key: string, generatorFlow: Genera
    if (template) {
       /// 文件单独模板优先
       if (typeof template === "string") {
-         templateInfo = getTemplate(template);
+         templateInfo = getTemplate(template, generatorItem);
       } else {
          templateInfo = template;
       }

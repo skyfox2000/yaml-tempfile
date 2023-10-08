@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import logger from "../logger/logger";
+import jsonpath from "jsonpath"
+import { GeneratorItem, replaceVars } from "./generator";
 
 /**
  * 配置根目录，存放template目录和文件指纹
@@ -47,9 +49,22 @@ export function loadTemplateConfig(yamlBase: string, configs: TemplateItem[]) {
 }
 // 在 template.ts 中
 
-export function getTemplate(name: string | TemplateItem): TemplateItem | undefined {
+export function getTemplate(name: string | TemplateItem, generatorItem: GeneratorItem): TemplateItem | undefined {
    if (typeof name === "string") {
       // 如果是模板名,从映射中获取
+      if (name.indexOf("??") > -1) {
+         let namePath = name.split("??");
+         /// 优先使用条件模板，如无则使用默认模板
+         const tempPath = jsonpath.query(generatorItem, namePath[0]);
+         logger.debug(name, tempPath, generatorItem)
+         if (tempPath.length > 0) {
+            name = tempPath[0] as string;
+         } else {
+            name = namePath[1];
+         }
+      }
+
+      name = replaceVars(name, generatorItem);
       return templateMap.get(name);
    } else {
       // 如果本身就是模板配置,直接返回
