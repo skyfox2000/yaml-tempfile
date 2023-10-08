@@ -1,6 +1,6 @@
 {
    "name": "yaml-tempfile",
-   "version": "0.1.1",
+   "version": "0.1.2",
    "description": "Yaml模板自动化生成文件，批量管理自动化生成文件, 支持vue/react，Generate files by yaml config and templates, plugin for vue/react",
    "author": "Alex.Hua",
    "license": "MIT",

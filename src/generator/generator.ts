@@ -5,6 +5,7 @@ import { ListItem } from "./file";
 import logger from "../logger/logger";
 import { FileData, saveFile } from "./filesave";
 import jsonpath from "jsonpath"
+import { replaceVars } from "../utils/utils";
 
 /**
  * 文件基础信息
@@ -101,40 +102,6 @@ interface GeneratorItem extends ListItem {
 }
 
 export type { GeneratorItem }
-
-/**
- * 
- * @param filePath 文件路径模板
- * @param params 参数
- * @returns 
- */
-const varRegex = /\$([ULF])\{(\w+)\}|%\{(\w+)\}/g;
-/**
- * 替换变量
- * @param {string} template 模板 
- * @param {object} params 参数
- * @returns {string}
- */
-export function replaceVars(template, params) {
-   const regex = /\$([A-Z]{0,1})\{(\w+)\}/g;
-   return template.replace(regex, (match, modifier, variable) => {
-      let value = params[variable];
-      if (value !== undefined) {
-         if (modifier === 'U') {
-            // 全部大写
-            value = value.toUpperCase();
-         } else if (modifier === 'L') {
-            // 全部小写
-            value = value.toLowerCase();
-         } else if (modifier === 'F') {
-            // 首字母大写
-            value = value.charAt(0).toUpperCase() + value.slice(1);
-         }
-      } else return "$" + modifier + "{" + variable + "}";
-
-      return value;
-   }) as string;
-}
 
 /**
  * 调用模板生成文件

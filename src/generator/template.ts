@@ -2,7 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import logger from "../logger/logger";
 import jsonpath from "jsonpath"
-import { GeneratorItem, replaceVars } from "./generator";
+import { GeneratorItem } from "./generator";
+import { replaceVars } from "../utils/utils";
 
 /**
  * 配置根目录，存放template目录和文件指纹
